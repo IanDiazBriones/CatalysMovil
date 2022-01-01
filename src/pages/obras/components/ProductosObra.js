@@ -2,13 +2,16 @@ import * as React from 'react';
 import {
   Dimensions,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {Card, Divider} from 'react-native-elements';
-import {useState} from 'react';
+import {Table, Row, Rows} from 'react-native-table-component';
+import {DataTable} from 'react-native-paper';
+import {TableView} from 'react-native-responsive-table';
 
 export const ProductosObra = ({obra}) => {
   return (
@@ -16,26 +19,27 @@ export const ProductosObra = ({obra}) => {
       <Card>
         <Card.Title>Productos Asignados De La Obra</Card.Title>
         <Card.Divider />
-        {obra?.productos?.map((producto, index) => {
-          return (
-            <>
-              <View
-                style={{
-                  paddingHorizontal: 5,
-                  paddingVertical: 5,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{width: '30%', textAlign: 'center'}}>
-                  {producto.name}
-                </Text>
-                <Text style={{width: '30%', textAlign: 'center'}}>
-                  {producto.cantidad}
-                </Text>
-              </View>
-            </>
-          );
-        })}
+        <ScrollView horizontal={true}>
+          <View
+            style={{
+              paddingHorizontal: 5,
+              paddingVertical: 5,
+              justifyContent: 'space-between',
+            }}>
+            {obra?.productos?.map((producto, index) => {
+              return (
+                <View key={'viewpobra' + index}>
+                  {index !== 0 && <Divider key={'Divider' + index} />}
+                  <Text key={'tesxt213121' + index}>
+                    {producto.nombre} {producto.cantidad} {producto.proveedor}{' '}
+                    {producto.codigo} {'$' + producto.precio}{' '}
+                    {producto.categoria} {'$' + producto.valor}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       </Card>
     </View>
   );

@@ -8,15 +8,19 @@ import {
   View,
 } from 'react-native';
 import {Card, Divider} from 'react-native-elements';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import * as requestFromServer from '../../../axios';
+import {useSelector} from 'react-redux';
 
 export const ListObrasComponent = ({navigation}) => {
-  const [obras, setObras] = useState([
-    {name: 'Obra N°1', id: 1},
-    {name: 'Obra N°2', id: 2},
-    {name: 'Obra N°3', id: 3},
-    {name: 'Obra N°4', id: 4},
-  ]);
+  const [obras, setObras] = useState([]);
+  const {user} = useSelector(state => state);
+  useEffect(() => {
+    requestFromServer
+      .getObras({nombre: user.fullname})
+      .then(r => setObras([...r.data]));
+  }, []);
+  useEffect(() => console.log(obras), [obras]);
 
   return (
     <View style={styles.container}>
@@ -25,18 +29,21 @@ export const ListObrasComponent = ({navigation}) => {
         <Divider />
         {obras?.map((obra, index) => {
           return (
-            <>
-              {index !== 0 && <Divider key={'div' + index} />}
+            <View key={'viewloc' + obra.id_obra}>
+              {index !== 0 && <Divider key={'div' + obra.id_obra} />}
               <TouchableOpacity
-                key={index}
+                key={obra.id_obra + 'asdadafsada'}
                 onPress={() =>
-                  navigation.navigate('Detalle Obra', {id: obra.id})
+                  navigation.navigate('Detalle Obra', {id: obra.id_obra})
                 }>
-                <Text key={'text' + index} style={styles.subHeader}>
-                  {obra.name}
+                <Text
+                  key={'textasdsadas' + obra.id_obra}
+                  style={styles.subHeader}>
+                  {obra.nombre_obra} {'Cod ' + obra.id_obra}{' '}
+                  {obra.estado === 0 ? ' Vigente' : ' Terminada'}
                 </Text>
               </TouchableOpacity>
-            </>
+            </View>
           );
         })}
       </Card>

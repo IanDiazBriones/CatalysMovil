@@ -18,11 +18,18 @@ export const PersonalObra = ({obra}) => {
         <Card.Divider />
         {obra?.personal?.map((personal, index) => {
           return (
-            <>
+            <View key={'viewPersObra' + index}>
+              {index !== 0 && <Divider />}
               <Text key={'text' + index} style={styles.subHeader}>
-                {personal.name}
+                {'Nombre: ' + personal.nombre}
               </Text>
-            </>
+              <Text key={'text2' + index} style={styles.subHeader}>
+                {'Rut: ' + personal.rut_personal}
+              </Text>
+              <Text key={'text3' + index} style={styles.subHeader}>
+                {'Ocupacion: ' + personal.ocupacion}
+              </Text>
+            </View>
           );
         })}
       </Card>
