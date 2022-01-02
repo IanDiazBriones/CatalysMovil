@@ -30,7 +30,7 @@ export const ProductosObra = ({obra}) => {
               return (
                 <View key={'viewpobra' + index}>
                   {index !== 0 && <Divider key={'Divider' + index} />}
-                  <Text key={'tesxt213121' + index}>
+                  <Text style={styles.subHeader} key={'tesxt213121' + index}>
                     {producto.nombre} {producto.cantidad} {producto.proveedor}{' '}
                     {producto.codigo} {'$' + producto.precio}{' '}
                     {producto.categoria} {'$' + producto.valor}
@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
     marginTop: 10,
+    color: 'black',
   },
 });

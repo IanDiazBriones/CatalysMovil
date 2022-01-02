@@ -9,8 +9,9 @@ import {PersonalObra} from './components/PersonalObra';
 import {ProductosObra} from './components/ProductosObra';
 import {HitosObra} from './components/HitosObra';
 import * as requestFromServer from '../../axios';
+import axios from 'axios';
 
-export const ViewObra = ({navigation}) => {
+export const ViewObra = ({route, navigation}) => {
   const [obra, setObra] = useState({
     nombre_obra: 'Las aventuras de garrido',
     inicio_obra: '10/12/2020',
@@ -53,13 +54,27 @@ export const ViewObra = ({navigation}) => {
         valor: 352,
       },
     ],
+    hitos: [],
   });
   useSession(navigation);
-
+  const {nombre_obra, inicio_obra, termino_obra} = route.params;
   useEffect(() => {
-    requestFromServer.getObra({id: 1010}).then(r => {
-      setObra(r.data);
-    });
+    axios
+      .get('http://192.168.1.103:8000/obras/asignacion', {timeout: 150000})
+      .then(r => {
+        setObra({
+          ...obra,
+          nombre_obra: nombre_obra,
+          inicio_obra: inicio_obra,
+          termino_obra: termino_obra,
+          personal: JSON.parse(r.data[0]),
+          productos: JSON.parse(r.data[1]),
+          hitos: JSON.parse(r.data[2]),
+        });
+      })
+      .finally(() => {
+        console.log('termine qxios');
+      });
   }, []);
 
   useEffect(() => console.log(obra), [obra]);
